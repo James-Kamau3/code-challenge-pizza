@@ -11,6 +11,9 @@ class Restaurant(db.Model):
 
     restaurant_pizzas = db.relationship('RestaurantPizza', backref='restaurant')
 
+    def __repr__(self):
+        return f'<Restaurant {self.name}, ${self.address}>'
+
 # add any models you may need. 
 
 class Pizza(db.Model):
@@ -25,6 +28,9 @@ class Pizza(db.Model):
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
 
+    def __repr__(self):
+        return f'<Pizza {self.name}, ${self.ingredients}>'
+
 class RestaurantPizza(db.Model):
 
     __tablename__ = 'restaurant_pizzas'
@@ -36,3 +42,6 @@ class RestaurantPizza(db.Model):
 
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
+
+    def __repr__(self):
+        return f'<RestaurantPizza {self.price}>'
