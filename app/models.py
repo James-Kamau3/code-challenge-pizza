@@ -11,4 +11,15 @@ class Restaurant(db.Model):
 
 # add any models you may need. 
 
+class Pizza(db.Model):
+
+    __tablename__ = 'Pizza'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    ingredients = db.Column(db.String, nullable=False)
+
+    created_at = db.Column(db.DateTime, server_default = db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate = db.func.now())
+
 
