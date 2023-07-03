@@ -46,6 +46,14 @@ class Pizza(db.Model):
     created_at = db.Column(db.DateTime, server_default = db.func.now())
     updated_at = db.Column(db.DateTime, onupdate = db.func.now())
 
+    def to_dict(self):
+        d ={
+        'id': self.id,
+        'name': self.name,
+        'ingredients': self.ingredients
+        }
+        return d
+    
     def __repr__(self):
         return f'<Pizza {self.name}, ${self.ingredients}>'
 

@@ -3,7 +3,7 @@
 from flask import Flask, make_response,jsonify,request
 from flask_migrate import Migrate
 
-from models import db, Restaurant
+from models import db, Restaurant, Pizza
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -53,6 +53,20 @@ def restaurants_by_id(id):
             jsonify(restaurant_resp), 200
         )
         return response
+
+@app.route('/pizzas')
+def pizzas():
+    pizza = Pizza.query.all()
+    data_format = [p.to_dict() for p in pizza]
+
+    response = make_response(
+        jsonify(data_format),
+        200
+    )
+    return response
+
+
+
 
 if __name__ == '__main__':
     app.run(port=5555)
