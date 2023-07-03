@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, make_response,jsonify
+from flask import Flask, make_response,jsonify,request
 from flask_migrate import Migrate
 
 from models import db, Restaurant
@@ -29,7 +29,30 @@ def restaurants():
     )
     return response
 
+@app.route('/restaurants/<int:id>', methods=['GET', 'DELETE'])
+def restaurants_by_id(id):
+    if request.method == 'GET':
+        restaurant = Restaurant.query.filter_by(id=id).first()
+        rest_dict = restaurant.to_dict()
 
+        response = make_response(
+            jsonify(rest_dict),
+            200
+        )
+        return response
+    
+    elif request.method == 'DELETE':
+        restaurant = Restaurant.query.filter_by(id=id).first()
+        db.session.delete(restaurant)
+        db.session.commit()
+        restaurant_resp = {
+            'Delete_Successful': True,
+            'message': 'Restaurant Successfully deleted!'
+        }
+        response = make_response(
+            jsonify(restaurant_resp), 200
+        )
+        return response
 
 if __name__ == '__main__':
     app.run(port=5555)

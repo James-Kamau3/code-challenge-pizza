@@ -5,7 +5,6 @@ db = SQLAlchemy()
 class Restaurant(db.Model):
     __tablename__ = 'restaurants'
 
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     address = db.Column(db.String, nullable=False)
@@ -13,11 +12,21 @@ class Restaurant(db.Model):
     restaurant_pizzas = db.relationship('RestaurantPizza', backref='restaurant')
 
     def to_dict(self):
+        pizza_list = []
+        for rp in self.restaurant_pizzas:
+            pizza_list.append({
+                'id': rp.pizza.id,
+                'name': rp.pizza.name,
+                'ingredients': rp.pizza.ingredients
+            })
+        
         return {
             'id': self.id,
             'name': self.name,
-            'address': self.address
+            'address': self.address,
+            'pizzas': pizza_list
         }
+
 
     def __repr__(self):
         return f'<Restaurant {self.name}, ${self.address}>'
@@ -27,6 +36,7 @@ class Restaurant(db.Model):
 class Pizza(db.Model):
 
     __tablename__ = 'pizzas'
+
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -42,7 +52,6 @@ class Pizza(db.Model):
 class RestaurantPizza(db.Model):
 
     __tablename__ = 'restaurant_pizzas'
-
 
     id = db.Column(db.Integer, primary_key = True)
     price = db.Column(db.Integer)
