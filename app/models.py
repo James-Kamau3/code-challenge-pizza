@@ -5,11 +5,19 @@ db = SQLAlchemy()
 class Restaurant(db.Model):
     __tablename__ = 'restaurants'
 
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     address = db.Column(db.String, nullable=False)
 
     restaurant_pizzas = db.relationship('RestaurantPizza', backref='restaurant')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'address': self.address
+        }
 
     def __repr__(self):
         return f'<Restaurant {self.name}, ${self.address}>'
@@ -35,6 +43,7 @@ class RestaurantPizza(db.Model):
 
     __tablename__ = 'restaurant_pizzas'
 
+
     id = db.Column(db.Integer, primary_key = True)
     price = db.Column(db.Integer)
     pizza_id = db.Column(db.Integer, db.ForeignKey('pizzas.id'))
@@ -45,3 +54,4 @@ class RestaurantPizza(db.Model):
 
     def __repr__(self):
         return f'<RestaurantPizza {self.price}>'
+
